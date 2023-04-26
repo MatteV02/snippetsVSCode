@@ -1,0 +1,12 @@
+{
+	"LLibsMain":{
+		"prefix": "LLMAIN",
+		"body": ["#include <stdio.h>",
+				"#include <stdlib.h>",
+				"#include <unistd.h> ",
+				"#include <fcntl.h>\n\n",
+				
+				"int main(int argc, char** argv){\n$0\nexit(0);\n}"],
+		"description": "Generates Main and needed libs LL Style"
+	}
+}

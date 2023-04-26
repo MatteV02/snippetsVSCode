@@ -1,0 +1,280 @@
+ {
+	"basic.shabang": {
+	"prefix": "LLBANG",
+	 	"body": [
+			"#!/bin/sh",
+		],
+	"description": "Creates a LL style Shabang"
+	},
+
+	"basic.exportPATH":{
+		"prefix": "LLPATH",
+		"body": ["#aggiorno la PATH",
+				"PATH=`pwd`:$PATH\nexport PATH"],
+		"description": "Creates a LL style Path export"
+	},
+
+	"basic.recursive":{
+		"prefix": "LLRECURSIVE",
+		"body": ["#!/bin/sh\n",
+				"#cambio la dir corrente alla directory da esplorare",		
+				"cd \\$1 \n",
+				"#esploro la directory",
+				"for ${1:VarCiclo} in *\ndo\n\t$0\ndone\n",
+				"#cerco nuove directory da esplorare",
+				"for ${1:VarCiclo} in *\ndo",
+				"\t#Se $1 e una directory attraversabile allora richiamo la funzione ricorsiva ed la esploro",
+				"\tif test -d $1 -a -x $1",
+				"\tthen",
+				"\t\tFCR.sh `pwd`/$1 ${2:Parametri aggiuntivi}",
+				"\tfi",
+				"done"],
+		"description": "C a LL sytle "
+	},
+
+	"basic.for":{
+		"prefix": "for",
+		"body": ["#${2:Commento}",
+				"for ${3:VarCiclo} ${4|in , |}$0",
+				"do\n\t\ndone"],
+		"description": "Creates a LL style for"
+	},
+
+	"basic.if":{
+		"prefix": "if",
+		"body": ["#${1:Commento}",
+				"if ${2:Condizione}",
+				"then\n\t$0\nfi"],
+		"description": "Creates a LL style for"
+	},
+
+	"basic.case":{
+		"prefix": "case",
+		"body": ["#${1:Commento}",
+				"case ${2:Param} in ",
+				"$0)\t\n",
+				"esac"],
+		"description": "Creates a LL style for"
+	},
+
+	"checkParams.NumOfParams_equal": {
+		"prefix": "if number of params ==",
+		"body": ["#controllo se il numero di parametri uguale a ${1:NumParam}",
+				"if test $# -eq ${1:NumParam}",
+				"then",
+				"\techo Numero di parametri errato, inseriti $# devono essere ${1:NumParam}\n\texit ${3|ExitValue,1|}",
+				"fi$0"],
+		"description": "Creates a LL style if for checking number of params"
+	},
+
+	"checkParams.NumOfParams_greater":{
+		"prefix": "if number of params >",	
+		"body": ["#controllo se il numero di parametri e maggiore di ${1:NumParam}",
+				"if test $# -lt ${1:NumParam}",
+				"then",
+				"\techo Numero di parametri errato, inseriti $# devono essre piu di ${1:NumParam}\n\texit ${3|ExitValue,1|}",
+				"fi$0"],
+		"description": "Creates a LL style if for checking number of params"
+	},
+
+	"checkParams.NumOfParams_greaterEquals":{
+		"prefix": "if number of params >=",	
+		"body": ["#controllo se il numero di parametri e maggiore di ${1:NumParam}",
+				"if test $# -le ${1:NumParam}",
+				"then",
+				"\techo Numero di parametri errato, inseriti $# devono essre piu di ${1:NumParam}\n\texit ${3|ExitValue,1|}",
+				"fi$0"],
+		"description": "Creates a LL style if for checking number of params"
+	},
+
+	"checkParams.NumOfParams_less":{
+		"prefix": "if number of params <",	
+		"body": ["#controllo se il numero di parametri e minore di ${1:NumParam}",
+				"if test $# -gt ${1:NumParam}",
+				"then",
+				"\techo \"Numero di parametri errato, inseriti $# devono essere meno di ${1:NumParam}\"\n\texit ${3|ExitValue,1|}$0",],
+		"description": "Creates a LL style if for checking number of params"
+	},
+
+	"checkParams.NumOfParams_lessEquals":{
+		"prefix": "if number of params <=",	
+		"body": ["#controllo se il numero di parametri e minore di ${1:NumParam}",
+				"if test $# -ge ${1:NumParam}",
+				"then",
+				"\techo \"Numero di parametri errato, inseriti $# devono essere meno di ${1:NumParam}\"\n\texit ${3|ExitValue,1|}",
+				"esac$0"],
+		"description": "Creates a LL style if for checking number of params"
+	},
+
+	"checkParams.IsAbsolte":{
+		"prefix": "case param is absolute",
+		"body": ["#controllo che il parametro ${1:Param} sia in forma assoluta",
+				"case ${1:Param} in",
+				"/*)\t#controllo per scrupolo il parametro ${1:Param} sia una directory attraversabile",
+				"\tif test -d ${1:Param} -a -x ${1:Param}",
+				"\tthen\n\t\techo \"parametro ${1:Param} corretto\"",
+				"\telse\n\t\techo \"parametro ${1:Param} non una directory o non attraversabile\"\n\t\texit ${3|ExitValue,2|}",
+				"\tfi;;",
+				"*)\techo \"parametro ${1:Param} non assoluto\"\n\texit ${3:ExitValue};;",
+				"esac",
+				"#inserisco il parametro nella variabile ${2:NomeVar}",
+				"${2:NomeVar}=${1:Param}$0"],
+		"description": "Creates a LL style case to check if a param is a absolute path"
+	},
+
+	"checkParams.IsRelative":{
+		"prefix": "case param is relative",
+		"body": ["#controllo che il parametro ${1:Param} sia in forma relativa",
+				"case ${1:Param} in",
+				"./*)\t#controllo per scrupolo il parametro ${1:Param} sia una directory attraversabile",
+				"\tif test -d ${1:Param} -a -x ${1:Param}",
+				"\tthen\n\t\techo \"parametro ${1:Param} corretto\"",
+				"\telse\n\t\techo \"parametro ${1:Param} non una directory o non attraversabile\"\n\t\texit ${3|ExitValue,2|}",
+				"\tfi;;",
+				"*)\techo \"parametro ${1:Param} non relativo\"\n\texit ${3|ExitValue,1};;",
+				"esac",
+				"#inserisco il parametro nella variabile ${2:NomeVar}",
+				"${2:NomeVar}=${1:Param}$0"],
+		"description": "Creates a LL style case to check if a param is a relative path"
+	},
+
+	"checkParams.IsSimple/String":{
+		"prefix": "case param is simple or string",
+		"body": ["#controllo che il parametro ${1:Param} sia in forma semplice",
+				"case ${1:Param} in",
+				"*/*)\techo\"parametro ${1:Param} deve essere semplice\n\texit ${3|ExitValue,2|};;",
+				"esac",
+				"echo \"parametro ${1:Param} corretto\"",
+				"#inserisco il parametro nella variabile ${2:NomeVar}",
+				"${2:NomeVar}=${1:Param}$0"],
+		"description": "Creates a LL style case to check if a param is a simple path"
+	},
+
+	"checkParams.IsInt_Pos":{
+		"prefix": "case param is int positive",
+		"body": ["#controllo se il parametro ${1:Param} e un numero strettamente positivo",
+				"case ${1:Param} in",
+				"*[!0-9]*)",
+				"\necho \"il parametro ${1:Param} deve essere un numero\"\n\t exit 3;;",
+				"0)",
+				"\necho \"il parametro ${1:Param} deve essere strettamente positivo\"\n\texit ${3|ExitValue,2|};;",
+				"esac",
+				"#inserisco il parametro nella variabile ${2:NomeVar}",
+				"${2:NomeVar}=${1:Param}$0"],
+		"description": "Creates a LL style case to check if a param is stricly positive"
+	},
+
+	"check.IsReadableFile":{
+		"prefix": "if IsFile Readable",
+		"body": ["#controllo se ${1:Param} e un file leggebile",
+				"if test -f ${1:Param} -a -r ${1:Param}",
+				"then\n\t$0\nfi"],
+		"description": "Creates a LL style check if a param is a readable file"
+	},
+
+	"check.IsWritableFile":{
+		"prefix": "if IsFile Writable",
+		"body": ["#controllo se ${1:Param} e un file leggebile",
+				"if test -f ${1:Param} -a -w ${1:Param}",
+				"then\n\t$0\nfi"],
+		"description": "Creates a LL style check if a param is a writable file"
+	},
+
+	"checkParams.IsReadable_WritableFile":{
+		"prefix": "if IsFile ReadableWritable",
+		"body": ["#controllo se ${1:Param} e un file leggebile",
+				"if test -f ${1:Param} -a -r ${1:Param} -a -w ${1:Param}",
+				"then\n\t$0\nfi"],
+		"description": "Creates a LL style check if a param is a readable and writable file"
+	},
+
+	"check.IsDirectory_Traversable":{
+		"prefix":"if IsDirectory Traversable",
+		"body":["#controllo se ${1:Param} e una directory attraversabile",
+			"if test -d ${1:Param} -a -x ${1:Param}",
+				"then\n\t$0\nfi"],
+		"description": "Creates a LL style check if a param is a exec directory"	
+		},
+
+	"check.FileLines_Greater":{
+		"prefix": "if file lines >",
+		"body": ["#controllo se le line contenute in ${1:File} sono strettamente maggiori di ${2:NumeroLinee}",
+				"if test `wc -l <$1` -gt $2",
+				"then\n\t$0\nfi"
+				],
+		"description": "Creates a LL style check if a File has more then $2 lines"
+	},
+
+	"check.FileLines_GreaterEqual":{
+		"prefix": "if file lines >=",
+		"body": ["#controllo se le line contenute in ${1:File} sono maggiori di ${2:NumeroLinee}",
+				"if test `wc -l <$1` -ge $2",
+				"then\n\t$0\nfi"
+				],
+		"description": "Creates a LL style check if a File has more or equals to $2 lines"
+	},
+
+
+	"check.FileLines_Less":{
+		"prefix": "if file lines <",
+		"body": ["#controllo se le line contenute in ${1:File} sono strettamente di ${2:NumeroLinee}",
+				"if test `wc -l <$1` -lt $2",
+				"then\n\t$0\nfi"
+				],
+		"description": "Creates a LL style check if a File has less then  $2 lines"
+	},
+
+
+	"check.FileLines_LessEqual":{
+		"prefix": "if file lines <=",
+		"body": ["#controllo se le line contenute in ${1:File} sono minori di ${2:NumeroLinee}",
+				"if test `wc -l <$1` -le $2",
+				"then\n\t$0\nfi"
+				],
+		"description": "Creates a LL style check if a File has less or equals to $2 lines"
+	},
+
+
+	"check.FileLines_Equals":{
+		"prefix": "if file lines ==",
+		"body": ["#controllo se le line contenute in ${1:File} sono esattamente ${2:NumeroLinee}",
+				"if test `wc -l <$1` -eq $2",
+				"then\n\t$0\nfi"
+				],
+		"description": "Creates a LL style check if a File has $2 lines"
+	},
+
+	"loops.inizialise_list":{
+		"prefix":"for fill list",
+		"body": ["#Inizializzo la variabile ${1:NomeVar} dove inserisco ${2:TipoDiDato}",
+				"${1:NomeVar}=",
+				"for ${3:CicloVar} ${4|in , |}$0",
+				"do\n\t\ndone"],
+
+	},
+
+	"utils.List_Append":{
+		"prefix": "UAppend",
+		"body": "${1:Lista}=\"$1 ${2:Elemento}\"",
+		"description": "Appends new element to list"
+	},
+
+	"utils.Find_Specified_LineTop":{
+		"prefix": "ULine From Top",
+		"body": "head -${1:NumRiga} <${2:File} | tail -1",
+		"description": "Returns specified line from the top"
+	},
+	
+	"utils.Find_Specified_LineBottom":{
+		"prefix": "ULine From Bottom",
+		"body": "tail -${1:NumRiga} <${2:File} | head -1",
+		"description": "Returns specified line from the bottom"
+	},
+
+	"utils.Add_One":{
+		"prefix": "UCounterAdd",
+		"body": "${1:contatore}=`expr $1 + 1`",
+		"description": "contatore++"
+	},
+
+}

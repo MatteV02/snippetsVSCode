@@ -1,0 +1,8 @@
+{
+	"basic.newCompilation":{
+		"prefix": "new Compilation",
+		"body": ["${1:NomeExe}: $1.c",
+		"\tgcc -Wall -std=c11 -o $1 $1.c"],
+		"description": "generates new compilation LL Style"
+	}
+}
