@@ -8,5 +8,74 @@
 				
 				"int main(int argc, char** argv){\n$0\nexit(0);\n}"],
 		"description": "Generates Main and needed libs LL Style"
+	},
+
+	"basics.open":{
+		"prefix": "if open",
+		"body": ["//controllo se il file e accedibile",
+				"int fd=0; /*variabile che conterra il file descriptor del file che stiamo per aprire */",
+				"if((fd = open(${1:file}, ${3|O_RDONLY,O_WRONLY,O_RDWR|})) < 0){\t\t/* ERRORE se non si riesce ad aprire in LETTURA il file */", 
+        			"\tprintf(\"Errore in apertura file %s dato che fd = %d\\n\", ${1:file}, fd);",
+        			"\texit(${2:ExitValue});\n}$0"]
+	},
+
+	"check.params_LessEqual":{
+		"prefix": "if params less equal",
+		"body": ["if (argc => ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${2:NParams}*/",
+        		"{\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
+        			"\t\texit(${2:ExitValue});",
+				"}$0"]
+	},
+
+	"check.params_Less":{
+		"prefix": "if params less",
+		"body": ["if (argc > ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore a ${2:NParams}*/",
+        		"{\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
+        			"\t\texit(${2:ExitValue});",
+				"}$0"]
+	},
+
+	"check.params_GreaterEqual":{
+		"prefix": "if params greater equal",
+		"body": ["if (argc =< ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${2:NParams}*/",
+        		"{\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
+        			"\t\texit(${2:ExitValue});",
+				"}$0"]
+	},
+
+	"check.params_Greater":{
+		"prefix": "if params greater",
+		"body": ["if (argc < ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore a ${2:NParams}*/",
+        		"{\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
+        			"\t\texit(${2:ExitValue});",
+				"}$0"]
+	},
+
+	"check.params_Equals":{
+		"prefix": "if params equals",
+		"body": ["if (argc < ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
+        		"{\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
+        			"\t\texit(${2:ExitValue});",
+				"}$0"]
+	},
+
+	"check.Is_PosNumber":{
+		"prefix": "if Strict Positive Number",
+		"body": ["int ${1:Variabile};\t\t/*Inizializzo varibile che conterra ${2:Param}*/",
+				"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero strettamente positivo",
+				"if((${1:Variabile}=atoi(${2:Param}))<=0 && ${1:Variabile}>=0){",
+				"\tprintf(\"il parametro %s non un numero positivo\",${2:Param});",
+				"\texit(${3:ExitValue});",
+				"}$0"]
+	},
+
+	"check.Is_StrictPosNumber":{
+		"prefix": "if Positive Number",
+		"body": ["int ${1:Variabile};\t\t/*Inizializzo varibile che conterra ${2:Param}*/",
+				"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero positivo",
+				"if((${1:Variabile}=atoi(${2:Param}))<=0 && ${1:Variabile}>0){",
+				"\tprintf(\"il parametro %s non un numero positivo\",${2:Param});",
+				"\texit(${3:ExitValue});",
+				"}$0"]
 	}
 }
