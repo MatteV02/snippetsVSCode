@@ -1,8 +1,17 @@
 {
 	"basic.newCompilation":{
 		"prefix": "new Compilation",
-		"body": ["${1:NomeExe}: $1.c",
-		"\tgcc -Wall -std=c11 -o $1 $1.c"],
+		"body": [
+			"${1:NomeExe}: $1.c",
+				"\tgcc -Wall -std=c11 -o $1 $1.c"
+			],
 		"description": "generates new compilation LL Style"
+	},
+	"basic.newCompilationForDebug":{
+		"prefix": "new Compilation debug",
+		"body": [
+			"${1:NomeExe}: $1.c",
+				"\tgcc -Wall -std=c11 -g -o $1 $1.c"
+		]
 	}
 }
