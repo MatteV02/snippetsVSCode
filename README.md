@@ -33,4 +33,4 @@ echo 'cd ~/.config/Code/User/snippets' >> $HOME/Desktop/syncSnippets.sh
 echo 'git pull' >> $HOME/Desktop/syncSnippets.sh
 chmod u+x $HOME/Desktop/syncSnippets.sh
 ```
-    - RUN this script frequently
+- RUN this script frequently
