@@ -84,7 +84,7 @@
 			"if (argc != ${1:NParams + 1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${2:ExitValue});",
+				"\texit(${3:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed equals the specified number"
@@ -113,19 +113,6 @@
 			"}$0"
 			],
 			"description": "Checks if the specified parameter is a positive number"
-	},
-
-	"check.Is_StrictPosNumber":{
-		"prefix": "if Positive Number",
-		"body": [
-			"int ${1:Variabile};\t\t/*Inizializzo varibile che conterra ${2:Param}*/",
-			"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero positivo",
-			"if((${1:Variabile}=atoi(${2:Param}))<=0 && ${1:Variabile}>0){",
-				"\tprintf(\"il parametro %s non un numero positivo\",${2:Param});",
-				"\texit(${3:ExitValue});",
-			"}$0"
-		],
-		"description": "Checks if the specified parameter is a strictly positive number"
 	},
 
 	"file.ReadWithBuffer":{
