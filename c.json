@@ -81,7 +81,7 @@
 	"check.params_Equals":{
 		"prefix": "if params equals",
 		"body": [
-			"if (argc < ${1:NParams + 1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
+			"if (argc != ${1:NParams + 1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${2:ExitValue});",
@@ -107,7 +107,7 @@
 		"body": [
 			"int ${1:Variabile};\t\t/*Inizializzo varibile che conterra' ${2:Param}*/",
 			"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero strettamente positivo",
-			"if((${1:Variabile}=atoi(${2:Param}))<=0 && ${1:Variabile}>=0){",
+			"if((${1:Variabile}=atoi(${2:Param})) <= 0){",
 				"\tprintf(\"il parametro %s non un numero positivo\",${2:Param});",
 				"\texit(${3:ExitValue});",
 			"}$0"
@@ -187,7 +187,10 @@
 	"process.wait_IgnoreReturn":{
 		"prefix": "wait ignore return",
 		"body": [
-			"wait((int*) 0);"
+			"if (wait((int*) 0) < 0) {",
+				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
+				"\texit(${1:ErrorCode});",
+			"}$0",
 		],
 		"description": "wait the termination of one child process ignoring the return value of the child"
 	},
@@ -197,7 +200,10 @@
 		"body": [
 			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
 			"int ${2:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
-			"wait(&${1:status});\n",
+			"if (wait(&${1:status}) < 0) {",
+				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
+				"\texit(${4:ErrorCode});",
+			"}\n",
 
 			"if ((${1:status} & 0xFF) != 0)",
 			"{",
