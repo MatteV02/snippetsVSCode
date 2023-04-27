@@ -36,7 +36,7 @@
 	"check.singleChar":{
 		"prefix": "if single char",
 		"body": [
-			"if (strlen(${1:StringaSorgente}) != 1) {",
+			"if (strlen(${1:StringaSorgente}) != 1) {\t// RICORDATI #include <string.h>",
 				"\tprintf(\"Errore, la stringa %s non e' un singolo carattere\\n\", ${1:StringaSorgente});",
 				"\texit(${3:ErrorCode});",
 			"}",
@@ -169,16 +169,16 @@
 	"process.fork":{
 		"prefix": "fork",
 		"body": [
-			"int ${1:pid};\t// memorizzo il valore di ritorno della funzione fork\n",
-			"if ((${1:pid} = fork()) < 0)\t/* Il processo padre crea un figlio */",
+			"int ${1:pidChild};\t// memorizzo il valore di ritorno della funzione fork\n",
+			"if ((${1:pidChild} = fork()) < 0)\t/* Il processo padre crea un figlio */",
 			"{\t/* In questo caso la fork e' fallita */",
 			"\tprintf(\"Errore durante la fork\\n\");",
 			"\texit(${2:ErrorCode});",
 			"}\n",
-			"if (${1:pid} == 0)",
+			"if (${1:pidChild} == 0)",
 			"{\t/* processo figlio */",
 			"\t$3",
-			"\texit(0);",
+			"\texit(${4:0});",
 			"}",
 			"/* processo padre */",
 			"$0",
@@ -217,5 +217,11 @@
 			"$0"
 		],
 		"description": "wait the termination of one child process ignoring the return value of the child"
+	},
+
+	"util.DebugPrint":{
+		"prefix": "printf debug",
+		"body": "printf(\"DEBUG:${1:debug print}\\n\"$2);",
+		"description": "standard debug print"
 	}
 }
