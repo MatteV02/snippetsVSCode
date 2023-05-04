@@ -189,7 +189,7 @@
 	"process.exec": {
 		"prefix": "exec",
 		"body": [
-			"${1|execv|execl|execvp|execlp}(${2:params});",
+			"${1|execv,execl,execvp,execlp|}(${2:params});",
 			"/* si esegue l'istruzione seguente SOLO in caso di fallimento */\n",
 			"perror(\"${3:errore esecuzione comando}\"); // #include <errno.h>",
 			"exit(errno);"
