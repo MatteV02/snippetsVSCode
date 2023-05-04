@@ -72,7 +72,7 @@
 	"check.params_GreaterEqual":{
 		"prefix": "if params greater equal",
 		"body": [
-			"if (argc =< ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${2:NParams}*/",
+			"if (argc < ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${2:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -84,7 +84,7 @@
 	"check.params_Greater":{
 		"prefix": "if params greater",
 		"body": [
-			"if (argc < ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore a ${2:NParams}*/",
+			"if (argc <= ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore a ${2:NParams}*/",
 			"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
