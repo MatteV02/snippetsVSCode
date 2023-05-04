@@ -224,7 +224,7 @@
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
 				"\texit(${4:ErrorCode});",
 			"} else {",
-				"\t${2:ritorno} = (${1:status} >> 8) & 0xFF;",
+				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
 			"}",
 			"$0"
 		],
