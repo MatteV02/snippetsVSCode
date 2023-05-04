@@ -160,8 +160,8 @@
 	"util.ErrorPrint":{
 		"prefix": "printf error",
 		"body": [
-			"printf(\"Errore, ${1:error text}\\n\"$2);",
-			"exit(${3:Error code});$0",
+			"perror(\"Errore, ${1:error text}\\n\"); // #include <errno.h>",
+			"exit(errno);$0",
 		],
 		"description": "Classical error print and exit"
 	},
@@ -186,10 +186,21 @@
 		"description": "Fork a process following the correcto generation scheme"
 	},
 
+	"process.exec": {
+		"prefix": "exec",
+		"body": [
+			"${1|execv|execl|execvp|execlp}(${2:params});",
+			"/* si esegue l'istruzione seguente SOLO in caso di fallimento */\n",
+			"perror(\"${3:errore esecuzione comando}\"); // #include <errno.h>",
+			"exit(errno);"
+		]
+	},
+
 	"process.wait_IgnoreReturn":{
 		"prefix": "wait ignore return",
 		"body": [
-			"if (wait((int*) 0) < 0) {",
+			"int ${2:pidChild};",
+			"if (${2:pidChild} = wait((int*) 0) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${1:ErrorCode});",
 			"}$0",
@@ -200,9 +211,10 @@
 	"process.wait_StoreReturn":{
 		"prefix": "wait store return",
 		"body": [
+			"int ${2:pidChild};",
 			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
 			"int ${2:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
-			"if (wait(&${1:status}) < 0) {",
+			"if (${2:pidChild} = wait(&${1:status}) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${4:ErrorCode});",
 			"}\n",
