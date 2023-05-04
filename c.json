@@ -4,7 +4,7 @@
 		"body": [
 			"#include <stdio.h>\t// Includo la libreria per la funzione printf",
 			"#include <stdlib.h>\t// Includo la libreria per la funzione exit",
-			"#include <unistd.h>\t// Includo la libreria per la funzione close e fork",
+			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork e exec",
 			"#include <fcntl.h>\t// Includo la libreria per la funzione open e le relative macro",
 			"#include <sys/wait.h>\t// Includo la libreria per la funzione wait\n\n",
 
@@ -189,7 +189,7 @@
 	"process.exec": {
 		"prefix": "exec",
 		"body": [
-			"${1|execv,execl,execvp,execlp|}(${2:params});",
+			"${1|execv,execl,execvp,execlp|}(${2:params}); // in caso di lista, ricordati di 0 terminare la lista dei parametri!",
 			"/* si esegue l'istruzione seguente SOLO in caso di fallimento */\n",
 			"perror(\"${3:errore esecuzione comando}\"); // #include <errno.h>",
 			"exit(errno);"
@@ -213,7 +213,7 @@
 		"body": [
 			"int ${2:pidChild};",
 			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
-			"int ${2:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
+			"int ${3:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
 			"if (${2:pidChild} = wait(&${1:status}) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${4:ErrorCode});",
@@ -222,7 +222,7 @@
 			"if ((${1:status} & 0xFF) != 0)",
 			"{",
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
-				"\texit(${3:ErrorCode});",
+				"\texit(${4:ErrorCode});",
 			"} else {",
 				"\t${2:ritorno} = (${1:status} >> 8) & 0xFF;",
 			"}",
