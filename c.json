@@ -214,7 +214,7 @@
 			"int ${2:pidChild};",
 			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
 			"int ${3:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
-			"if (${2:pidChild} = wait(&${1:status}) < 0) {",
+			"if ((${2:pidChild} = wait(&${1:status})) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${4:ErrorCode});",
 			"}\n",
