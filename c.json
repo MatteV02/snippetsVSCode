@@ -33,10 +33,26 @@
 		"description": "Opens a file in the selected mode and checks if the action is successful"
 	},
 
+	"check.creat":{
+		"prefix": [
+			"if creat",
+			"creat"
+		],
+		"body": [
+			"//controllo se il file e' accedibile",
+			"int fd = 0; /*variabile che conterra il file descriptor del file che stiamo per aprire */",
+			"if((fd = creat(${1:file}, ${2:0640})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
+				"\tprintf(\"Errore in creazione del file %s dato che fd = %d\\n\", ${1:file}, fd);",
+				"\texit(${3:ExitValue});",
+			"}$0"
+		],
+		"description": "Opens a file in the selected mode and checks if the action is successful"
+	},
+
 	"check.singleChar":{
 		"prefix": "if single char",
 		"body": [
-			"if (strlen(${1:StringaSorgente}) != 1) {\t// RICORDATI #include <string.h>",
+			"if (strlen(${1:StringaSorgente}) != 1) {\t// #include <string.h>",
 				"\tprintf(\"Errore, la stringa %s non e' un singolo carattere\\n\", ${1:StringaSorgente});",
 				"\texit(${3:ErrorCode});",
 			"}",
@@ -48,7 +64,7 @@
 	"check.params_LessEqual":{
 		"prefix": "if params less equal",
 		"body": [
-			"if (argc => ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${2:NParams}*/",
+			"if (argc > ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${2:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
         		"\texit(${3:ExitValue});",
@@ -60,7 +76,7 @@
 	"check.params_Less":{
 		"prefix": "if params less",
 		"body": [
-			"if (argc > ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore a ${2:NParams}*/",
+			"if (argc >= ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore a ${2:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -108,10 +124,10 @@
 	"check.params_InRange":{
 		"prefix": "if params range",
 		"body": [
-			"if (argc < ${1:lower bound + 1} || argc > ${2:upper bound + 1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
+			"if (argc < ${1:lower bound + 1} || argc > ${2:upper bound + 1}) /* controllo sul numero di parametri: devono essere compresi tra ${3:lower bound} e ${4:upper bound} */",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${3:ExitValue});",
+				"\texit(${5:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is in the specified range"
@@ -160,8 +176,18 @@
 	"util.ErrorPrint":{
 		"prefix": "printf error",
 		"body": [
-			"perror(\"Errore, ${1:error text}\\n\"); // #include <errno.h>",
-			"exit(errno);$0",
+			"printf(\"Errore, ${1:error text}\\n\"); ",
+			"exit(${2:ExitValue});$0",
+		],
+		"description": "Classical error print and exit"
+	},
+
+	"util.perror":{
+		"prefix": "perror",
+		"body": [
+			"perror(\"Errore, ${1:error text}\\n\"); ",
+			"exit(errno);\t// #include <errno.h>",
+			"$0"
 		],
 		"description": "Classical error print and exit"
 	},
@@ -235,5 +261,6 @@
 		"prefix": "printf debug",
 		"body": "printf(\"DEBUG:${1:debug print}\\n\"$2);",
 		"description": "standard debug print"
-	}
+	},
+	
 }
