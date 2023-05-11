@@ -248,7 +248,6 @@
 			"if ((${1:status} & 0xFF) != 0)",
 			"{",
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
-				"\texit(${4:ErrorCode});",
 			"} else {",
 				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
 			"}",
@@ -278,7 +277,7 @@
 	"pipes.forAperturaNPipe":{
 			"prefix": "for apertura N pipe",
 			"body": ["//apro $2 pipes",
-					"pipe_t* piped=malloc(sizeof(pipe_t)*{2:Fasi})",
+					"pipe_t* piped=malloc(sizeof(pipe_t)*${2:Fasi});",
 					"for(int i=0;i<${2:Fasi};i++){",
 					"\tif(pipe(piped[i])<0){",
 					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\",i);",
@@ -287,10 +286,15 @@
 
 	"pipes.forChiusuraLatoPipe":{
 		"prefix": "for chiusura n lati pipes",
-		"body": ["//chiudo tutte le pipe in ${1|lettura|scrittura|}",
-				"for(int k=0;k<${2:Fasi};k++){",
-				"\tclose(piped[k][${2|1,0|}]",
-				"}"]	
+		"body": [
+			"//chiudo tutte le pipe che non uso",
+			"for(int k=0; k < ${1:N}; k++) {",
+			"\tclose(piped[k][${3|0,1|}]);",
+			"\tif (k != ${2:pipeAperta}) {",
+			"\t\tclose(piped[k][${4|0,1|}]);",
+			"\t}",
+			"}",					
+			]	
 	},
 	"pipes.dup":{
 		"prefix": "dup ridirezione",
