@@ -272,7 +272,7 @@
 	"pipes.typedef":{
 		"prefix": "LLTYPEDEF",
 		"body": ["//definisco il tipo pipe_t",
-				 "typedef int pipe_t[2]"]
+				 "typedef int pipe_t[2];"]
 	},
 
 	"pipes.forAperturaNPipe":{
@@ -297,6 +297,19 @@
 		"body": ["close(${1|1,0|})",
 				"dup(piped[${1|1,0|}]);",
 				"close(piped[${1|1,0|}]);"]
+	},
+
+	"pipes.creaPipeSingola":{
+		"prefix": "pipe singola",
+		"body": [
+			"pipe_t ${1:piped};",
+			"",
+			"if (pipe(${1:piped}) < 0 )",
+			"{\tprintf(\"Errore creazione pipe\\n\");",
+			"\texit(${2:ErrorCode});",
+			"}",
+		],
+		"description": "Crea una singola pipe e controlla che sia stata creata correttamente"
 	}
 	
 	
