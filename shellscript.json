@@ -1,16 +1,17 @@
  {
 	"basic.shabang": {
 	"prefix": "LLBANG",
-	 	"body": [
-			"#!/bin/sh",
-		],
+	"body": [
+		"#!/bin/sh",
+	],
 	"description": "Creates a LL style Shabang"
 	},
 
 	"basic.exportPATH":{
 		"prefix": "LLPATH",
 		"body": ["#aggiorno la PATH",
-				"PATH=`pwd`:$PATH\nexport PATH"],
+				"PATH=`pwd`:$PATH",
+				"export PATH"],
 		"description": "Creates a LL style Path export"
 	},
 
@@ -36,7 +37,9 @@
 		"prefix": "for",
 		"body": ["#${2:Commento}",
 				"for ${3:VarCiclo} ${4|in , |}$0",
-				"do\n\t\ndone"],
+				"do",
+				"\t",
+				"done"],
 		"description": "Creates a LL style for"
 	},
 
@@ -44,8 +47,11 @@
 		"prefix": "if",
 		"body": ["#${1:Commento}",
 				"if ${2:Condizione}",
-				"then\n\t$0\nfi"],
-		"description": "Creates a LL style for"
+				"then",
+				"\t",
+				"$0",
+				"fi"],
+		"description": "Creates a LL style if"
 	},
 
 	"basic.case":{
@@ -54,13 +60,13 @@
 				"case ${2:Param} in ",
 				"$0)\t\n",
 				"esac"],
-		"description": "Creates a LL style for"
+		"description": "Creates a LL style case"
 	},
 
 	"checkParams.NumOfParams_equal": {
 		"prefix": "if number of params ==",
 		"body": ["#controllo se il numero di parametri uguale a ${1:NumParam}",
-				"if test $# -eq ${1:NumParam}",
+				"if test $# -ne ${1:NumParam}",
 				"then",
 				"\techo Numero di parametri errato, inseriti $# devono essere ${1:NumParam}\n\texit ${3|ExitValue,1|}",
 				"fi$0"],
@@ -69,28 +75,28 @@
 
 	"checkParams.NumOfParams_greater":{
 		"prefix": "if number of params >",	
-		"body": ["#controllo se il numero di parametri e maggiore di ${1:NumParam}",
-				"if test $# -lt ${1:NumParam}",
+		"body": ["#controllo se il numero di parametri e' strettamente maggiore di ${1:NumParam}",
+				"if test $# -le ${1:NumParam}",
 				"then",
-				"\techo Numero di parametri errato, inseriti $# devono essre piu di ${1:NumParam}\n\texit ${3|ExitValue,1|}",
+				"\techo Numero di parametri errato, inseriti $# devono essere strettamente maggiori di ${1:NumParam}\n\texit ${3|ExitValue,1|}",
 				"fi$0"],
 		"description": "Creates a LL style if for checking number of params"
 	},
 
 	"checkParams.NumOfParams_greaterEquals":{
 		"prefix": "if number of params >=",	
-		"body": ["#controllo se il numero di parametri e maggiore di ${1:NumParam}",
-				"if test $# -le ${1:NumParam}",
+		"body": ["#controllo se il numero di parametri e maggiore o uguale a ${1:NumParam}",
+				"if test $# -lt ${1:NumParam}",
 				"then",
-				"\techo Numero di parametri errato, inseriti $# devono essre piu di ${1:NumParam}\n\texit ${3|ExitValue,1|}",
+				"\techo Numero di parametri errato, inseriti $# devono essere maggiori o uguali a ${1:NumParam}\n\texit ${3|ExitValue,1|}",
 				"fi$0"],
 		"description": "Creates a LL style if for checking number of params"
 	},
 
 	"checkParams.NumOfParams_less":{
 		"prefix": "if number of params <",	
-		"body": ["#controllo se il numero di parametri e minore di ${1:NumParam}",
-				"if test $# -gt ${1:NumParam}",
+		"body": ["#controllo se il numero di parametri e strettamente minore di ${1:NumParam}",
+				"if test $# -ge ${1:NumParam}",
 				"then",
 				"\techo \"Numero di parametri errato, inseriti $# devono essere meno di ${1:NumParam}\"\n\texit ${3|ExitValue,1|}$0",],
 		"description": "Creates a LL style if for checking number of params"
@@ -98,19 +104,19 @@
 
 	"checkParams.NumOfParams_lessEquals":{
 		"prefix": "if number of params <=",	
-		"body": ["#controllo se il numero di parametri e minore di ${1:NumParam}",
-				"if test $# -ge ${1:NumParam}",
+		"body": ["#controllo se il numero di parametri e minore o uguale a ${1:NumParam}",
+				"if test $# -gt ${1:NumParam}",
 				"then",
-				"\techo \"Numero di parametri errato, inseriti $# devono essere meno di ${1:NumParam}\"\n\texit ${3|ExitValue,1|}",
-				"esac$0"],
+				"\techo \"Numero di parametri errato, inseriti $# devono essere minori o uguali a ${1:NumParam}\"\n\texit ${3|ExitValue,1|}",
+				"fi$0"],
 		"description": "Creates a LL style if for checking number of params"
 	},
 
-	"checkParams.IsAbsolte":{
+	"checkParams.IsAbsolute":{
 		"prefix": "case param is absolute",
-		"body": ["#controllo che il parametro ${1:Param} sia in forma assoluta",
+		"body": ["#controllo che il parametro ${1:Param} sia un percoso assoluto",
 				"case ${1:Param} in",
-				"/*)\t#controllo per scrupolo il parametro ${1:Param} sia una directory attraversabile",
+				"/*)\t#controllo che il parametro ${1:Param} sia una directory attraversabile",
 				"\tif test -d ${1:Param} -a -x ${1:Param}",
 				"\tthen\n\t\techo \"parametro ${1:Param} corretto\"",
 				"\telse\n\t\techo \"parametro ${1:Param} non una directory o non attraversabile\"\n\t\texit ${3|ExitValue,2|}",
@@ -126,12 +132,12 @@
 		"prefix": "case param is relative",
 		"body": ["#controllo che il parametro ${1:Param} sia in forma relativa",
 				"case ${1:Param} in",
-				"./*)\t#controllo per scrupolo il parametro ${1:Param} sia una directory attraversabile",
+				"*/*)\t#controllo per scrupolo il parametro ${1:Param} sia una directory attraversabile",
 				"\tif test -d ${1:Param} -a -x ${1:Param}",
 				"\tthen\n\t\techo \"parametro ${1:Param} corretto\"",
 				"\telse\n\t\techo \"parametro ${1:Param} non una directory o non attraversabile\"\n\t\texit ${3|ExitValue,2|}",
 				"\tfi;;",
-				"*)\techo \"parametro ${1:Param} non relativo\"\n\texit ${3|ExitValue,1};;",
+				"*)\techo \"parametro ${1:Param} non relativo\"\n\texit ${3|ExitValue,1|};;",
 				"esac",
 				"#inserisco il parametro nella variabile ${2:NomeVar}",
 				"${2:NomeVar}=${1:Param}$0"],
@@ -142,7 +148,7 @@
 		"prefix": "case param is simple or string",
 		"body": ["#controllo che il parametro ${1:Param} sia in forma semplice",
 				"case ${1:Param} in",
-				"*/*)\techo\"parametro ${1:Param} deve essere semplice\n\texit ${3|ExitValue,2|};;",
+				"*/*)\techo\"parametro ${1:Param} deve essere semplice\"\n\texit ${3|ExitValue,2|};;",
 				"esac",
 				"echo \"parametro ${1:Param} corretto\"",
 				"#inserisco il parametro nella variabile ${2:NomeVar}",
@@ -155,9 +161,13 @@
 		"body": ["#controllo se il parametro ${1:Param} e un numero strettamente positivo",
 				"case ${1:Param} in",
 				"*[!0-9]*)",
-				"\necho \"il parametro ${1:Param} deve essere un numero\"\n\t exit 3;;",
-				"0)",
-				"\necho \"il parametro ${1:Param} deve essere strettamente positivo\"\n\texit ${3|ExitValue,2|};;",
+				"\techo \"il parametro ${1:Param} deve essere un numero\"\n\texit 3;;",
+				"*)",
+				"\tif test Param -eq 0", 
+				"\tthen",
+				"\t\techo \"il parametro ${1:Param} deve essere strettamente positivo\"",
+				"\t\texit ${3|ExitValue,2|};;",
+				"\tfi",
 				"esac",
 				"#inserisco il parametro nella variabile ${2:NomeVar}",
 				"${2:NomeVar}=${1:Param}$0"],
