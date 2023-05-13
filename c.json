@@ -2,9 +2,9 @@
 	"LLibsMain":{
 		"prefix": "LLMAIN",
 		"body": [
-			"#include <stdio.h>\t// Includo la libreria per la funzione printf",
+			"#include <stdio.h>\t// Includo la libreria per la funzione printf e BUFSIZ",
 			"#include <stdlib.h>\t// Includo la libreria per la funzione exit",
-			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork e exec",
+			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, exec, read, write",
 			"#include <fcntl.h>\t// Includo la libreria per la funzione open e le relative macro",
 			"#include <sys/wait.h>\t// Includo la libreria per la funzione wait\n\n",
 
@@ -19,7 +19,7 @@
 
 	"check.open":{
 		"prefix": [
-			"if open",
+			"open",
 			"if is file"
 		],
 		"body": [
@@ -35,12 +35,11 @@
 
 	"check.creat":{
 		"prefix": [
-			"if creat",
 			"creat"
 		],
 		"body": [
-			"//controllo se il file e' accedibile",
-			"int fd = 0; /*variabile che conterra il file descriptor del file che stiamo per aprire */",
+			"//creo il file",
+			"int fd = 0; /*variabile che conterra il file descriptor del file che stiamo per creare */",
 			"if((fd = creat(${1:file}, ${2:0640})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
 				"\tprintf(\"Errore in creazione del file %s dato che fd = %d\\n\", ${1:file}, fd);",
 				"\texit(${3:ExitValue});",
@@ -52,6 +51,7 @@
 	"check.singleChar":{
 		"prefix": "if single char",
 		"body": [
+			"//controlla che la stringa <StringaSorgente> sia un singolo carattere",
 			"if (strlen(${1:StringaSorgente}) != 1) {\t// #include <string.h>",
 				"\tprintf(\"Errore, la stringa %s non e' un singolo carattere\\n\", ${1:StringaSorgente});",
 				"\texit(${3:ErrorCode});",
@@ -62,9 +62,9 @@
 	},
 
 	"check.params_LessEqual":{
-		"prefix": "if params less equal",
+		"prefix": "if params <=",
 		"body": [
-			"if (argc > ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${2:NParams}*/",
+			"if (argc > ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
         		"\texit(${3:ExitValue});",
@@ -74,9 +74,9 @@
 	},
 
 	"check.params_Less":{
-		"prefix": "if params less",
+		"prefix": "if params <",
 		"body": [
-			"if (argc >= ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero minore a ${2:NParams}*/",
+			"if (argc >= ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero minore a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -86,9 +86,9 @@
 	},
 
 	"check.params_GreaterEqual":{
-		"prefix": "if params greater equal",
+		"prefix": "if params >=",
 		"body": [
-			"if (argc < ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${2:NParams}*/",
+			"if (argc < ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -98,9 +98,9 @@
 	},
 
 	"check.params_Greater":{
-		"prefix": "if params greater",
+		"prefix": "if params >",
 		"body": [
-			"if (argc <= ${1:NParams+1}) /* controllo sul numero di parametri: devono essere in numero maggiore a ${2:NParams}*/",
+			"if (argc <= ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero maggiore a ${1:NParams}*/",
 			"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -110,9 +110,9 @@
 	},
 
 	"check.params_Equals":{
-		"prefix": "if params equals",
+		"prefix": "if params ==",
 		"body": [
-			"if (argc != ${1:NParams + 1}) /* controllo sul numero di parametri: devono essere in numero uguale a ${2:NParams}*/",
+			"if (argc != ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${3:ExitValue});",
@@ -124,7 +124,7 @@
 	"check.params_InRange":{
 		"prefix": "if params range",
 		"body": [
-			"if (argc < ${1:lower bound + 1} || argc > ${2:upper bound + 1}) /* controllo sul numero di parametri: devono essere compresi tra ${3:lower bound} e ${4:upper bound} */",
+			"if (argc < ${1:lower bound} + 1 || argc > ${2:upper bound} + 1) /* controllo sul numero di parametri: devono essere compresi tra ${1:lower bound} e ${2:upper bound} */",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
 				"\texit(${5:ExitValue});",
@@ -138,7 +138,7 @@
 		"body": [
 			"int ${1:Variabile};\t\t/*Inizializzo varibile che conterra' ${2:Param}*/",
 			"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero strettamente positivo",
-			"if((${1:Variabile}=atoi(${2:Param})) <= 0){",
+			"if((${1:Variabile} = atoi(${2:Param})) <= 0){",
 				"\tprintf(\"il parametro %s non un numero positivo\\n\",${2:Param});",
 				"\texit(${3:ExitValue});",
 			"}$0"
@@ -149,8 +149,8 @@
 	"file.ReadWithBuffer":{
 		"prefix": "read buffers from file",
 		"body": [
-			"char ${1:buffer}[BUFSIZ];",
-			"int ${2:nread};\n",
+			"char ${1:buffer}[BUFSIZ];    // buffer che verra' letto da file",
+			"int ${2:nread};              // variabile che memorizzera' il ritorno della read\n",
 
 			"while ((${2:nread} = read(${3:infile}, ${1:buffer}, BUFSIZ)) > 0 )\t/* ciclo di lettura fino a che nread e' maggiore di 0 */",
 			"{",
@@ -250,8 +250,8 @@
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
 			"} else {",
 				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
+				"$0",
 			"}",
-			"$0"
 		],
 		"description": "wait the termination of one child process ignoring the return value of the child"
 	},
