@@ -248,6 +248,7 @@
 			"if ((${1:status} & 0xFF) != 0)",
 			"{",
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
+				"\texit(${4:ErrorCode});",
 			"} else {",
 				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
 				"$0",
@@ -271,7 +272,8 @@
 	"pipes.typedef":{
 		"prefix": "LLTYPEDEF",
 		"body": ["//definisco il tipo pipe_t",
-				 "typedef int pipe_t[2];"]
+				 "typedef int pipe_t[2];"],
+		"description": "definisce un array di pipe LLStyle"
 	},
 
 	"pipes.forAperturaNPipe":{
@@ -281,26 +283,27 @@
 					"for(int i=0;i<${2:Fasi};i++){",
 					"\tif(pipe(piped[i])<0){",
 					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\",i);",
-					"\t}","}"]	
+					"\t}","}"],
+			"description": "apre N pipe"	
 	},
 
 	"pipes.forChiusuraLatoPipe":{
 		"prefix": "for chiusura n lati pipes",
-		"body": [
-			"//chiudo tutte le pipe che non uso",
-			"for(int k=0; k < ${1:N}; k++) {",
-			"\tclose(piped[k][${3|0,1|}]);",
-			"\tif (k != ${2:pipeAperta}) {",
-			"\t\tclose(piped[k][${4|0,1|}]);",
-			"\t}",
-			"}",					
-			]	
+		"body": ["//chiudo tutte le pipe in ${1|lettura,scrittura|}",
+				"for(int k=0;k<${2:Fasi};k++){",
+				"\tclose(piped[k][${3|1,0|}]);",
+				"}"],
+		"description": "chiude n pipe"
 	},
 	"pipes.dup":{
 		"prefix": "dup ridirezione",
-		"body": ["close(${1|1,0|})",
+		"body": ["//chiudo lo ${2|stdin,stdout|}",
+				"close(${1|1,0|})",
+				"//duplico la pipe lato ${3|lettura,scrittura|}",
 				"dup(piped[${1|1,0|}]);",
-				"close(piped[${1|1,0|}]);"]
+				"chiudo la pipe duplicata",
+				"close(piped[${1|1,0|}]);"],
+		"description": "chiude lo stdout/stdin ed lo rimpiazza con la pipe in lettura/scrittura"
 	},
 
 	"pipes.creaPipeSingola":{
