@@ -289,20 +289,27 @@
 
 	"pipes.forChiusuraLatoPipe":{
 		"prefix": "for chiusura n lati pipes",
-		"body": ["//chiudo tutte le pipe in ${1|lettura,scrittura|}",
-				"for(int k=0;k<${2:Fasi};k++){",
-				"\tclose(piped[k][${3|1,0|}]);",
-				"}"],
+		"body": [
+			"//chiudo tutte le pipe in lettura e scrittura tranne la $3-esima pipe, aperta in ${6|scrittura, lettura|}",
+			"for(int ${1:k} = 0; $1 < ${2:N}; $1++){",
+			"\tclose(piped[$1][${4|1,0|}]);",
+			"\tif ($1 != ${3:i}) {",
+			"\t\tclose(piped[$2][${5|0,1|}]);",
+			"\t}",
+			"}",
+			],
 		"description": "chiude n pipe"
 	},
 	"pipes.dup":{
 		"prefix": "dup ridirezione",
-		"body": ["//chiudo lo ${2|stdin,stdout|}",
-				"close(${1|1,0|})",
-				"//duplico la pipe lato ${3|lettura,scrittura|}",
-				"dup(piped[${1|1,0|}]);",
-				"chiudo la pipe duplicata",
-				"close(piped[${1|1,0|}]);"],
+		"body": ["//chiudo lo ${1|stdin,stdout|}",
+				"close(${2|0,1|});",
+				"//duplico la pipe lato ${3|scrittura,lettura|}",
+				"dup(piped$4);",
+				"//chiudo il lato della pipe duplicato",
+				"close(piped$4);",
+				"$0",
+			],
 		"description": "chiude lo stdout/stdin ed lo rimpiazza con la pipe in lettura/scrittura"
 	},
 
