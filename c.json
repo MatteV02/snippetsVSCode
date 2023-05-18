@@ -283,6 +283,7 @@
 					"for(int i=0;i<${2:Fasi};i++){",
 					"\tif(pipe(piped[i])<0){",
 					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\",i);",
+					"\t\texit(${3:ExitValue});",
 					"\t}","}"],
 			"description": "apre N pipe"	
 	},
