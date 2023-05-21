@@ -195,13 +195,13 @@
 	"process.fork":{
 		"prefix": "fork",
 		"body": [
-			"int ${1:pidChild};\t// memorizzo il valore di ritorno della funzione fork\n",
-			"if ((${1:pidChild} = fork()) < 0)\t/* Il processo padre crea un figlio */",
+			"int ${1:pidFiglio};\t// memorizzo il valore di ritorno della funzione fork\n",
+			"if (($1 = fork()) < 0)\t/* Il processo padre crea un figlio */",
 			"{\t/* In questo caso la fork e' fallita */",
 			"\tprintf(\"Errore durante la fork\\n\");",
 			"\texit(${2:ErrorCode});",
 			"}\n",
-			"if (${1:pidChild} == 0)",
+			"if ($1 == 0)",
 			"{\t/* processo figlio */",
 			"\t$3",
 			"\texit(${4:0});",
@@ -225,8 +225,8 @@
 	"process.wait_IgnoreReturn":{
 		"prefix": "wait ignore return",
 		"body": [
-			"int ${2:pidChild};",
-			"if (${2:pidChild} = wait((int*) 0) < 0) {",
+			"int ${2:pidFiglio};",
+			"if ($2 = wait((int*) 0) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${1:ErrorCode});",
 			"}$0",
@@ -237,10 +237,10 @@
 	"process.wait_StoreReturn":{
 		"prefix": "wait store return",
 		"body": [
-			"int ${2:pidChild};",
+			"int ${2:pidFiglio};",
 			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
 			"int ${3:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
-			"if ((${2:pidChild} = wait(&${1:status})) < 0) {",
+			"if (($2 = wait(&${1:status})) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${4:ErrorCode});",
 			"}\n",
