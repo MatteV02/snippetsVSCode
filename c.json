@@ -279,7 +279,7 @@
 	"pipes.forAperturaNPipe":{
 			"prefix": "for apertura N pipe",
 			"body": ["//apro $2 pipes",
-					"pipe_t* piped=malloc(sizeof(pipe_t)*${2:Fasi});",
+					"pipe_t* piped=malloc(sizeof(pipe_t)*(${2:Fasi}));",
 					"for(int i=0;i<${2:Fasi};i++){",
 					"\tif(pipe(piped[i])<0){",
 					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\",i);",
