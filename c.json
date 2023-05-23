@@ -4,7 +4,7 @@
 		"body": [
 			"#include <stdio.h>\t// Includo la libreria per la funzione printf e BUFSIZ",
 			"#include <stdlib.h>\t// Includo la libreria per la funzione exit",
-			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, famiglia exec, read, write, lseek, famiglia get, pipe, dup",
+			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, famiglia exec, read, write, lseek, famiglia get, pipe,",
 			"#include <fcntl.h>\t// Includo la libreria per la funzione open, creat e le relative macro",
 			"#include <sys/wait.h>\t// Includo la libreria per la funzione wait\n\n",
 
@@ -51,7 +51,7 @@
 	"check.singleChar":{
 		"prefix": "if single char",
 		"body": [
-			"//controlla che la stringa <StringaSorgente> sia un singolo carattere",
+			"//controlla che la stringa $1 sia un singolo carattere",
 			"if (strlen(${1:StringaSorgente}) != 1) {\t// #include <string.h>",
 				"\tprintf(\"Errore, la stringa %s non e' un singolo carattere\\n\", ${1:StringaSorgente});",
 				"\texit(${3:ErrorCode});",
