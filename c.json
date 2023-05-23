@@ -4,8 +4,8 @@
 		"body": [
 			"#include <stdio.h>\t// Includo la libreria per la funzione printf e BUFSIZ",
 			"#include <stdlib.h>\t// Includo la libreria per la funzione exit",
-			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, exec, read, write",
-			"#include <fcntl.h>\t// Includo la libreria per la funzione open e le relative macro",
+			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, famiglia exec, read, write, lseek, famiglia get, pipe, dup",
+			"#include <fcntl.h>\t// Includo la libreria per la funzione open, creat e le relative macro",
 			"#include <sys/wait.h>\t// Includo la libreria per la funzione wait\n\n",
 
 			
