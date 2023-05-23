@@ -136,7 +136,7 @@
 	"check.Is_PosNumber":{
 		"prefix": "if Strict Positive Number",
 		"body": [
-			"int ${1:Variabile};\t\t/*Inizializzo varibile che conterra' ${2:Param}*/",
+			"int ${1:Variabile};\t\t/*Dichiarazione varibile che conterra' ${2:Param}*/",
 			"//controllo utlizzando la funzione atoi se il ${2:Param} e un numero strettamente positivo",
 			"if((${1:Variabile} = atoi(${2:Param})) <= 0){",
 				"\tprintf(\"il parametro %s non un numero positivo\\n\",${2:Param});",
@@ -248,7 +248,6 @@
 			"if ((${1:status} & 0xFF) != 0)",
 			"{",
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
-				"\texit(${4:ErrorCode});",
 			"} else {",
 				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
 				"$0",
