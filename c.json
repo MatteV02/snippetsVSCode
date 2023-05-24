@@ -165,7 +165,7 @@
 		"body": [
 			"char ${1:buffer};\n",
 
-			"while (read(${2:infile}, &${1:buffer}, 1) > 0)\t/* ciclo di lettura fino a che riesco a leggere un carattere da file */",
+			"while (read(${2:infile}, &${1:buffer}, sizeof(char)) > 0)\t/* ciclo di lettura fino a che riesco a leggere un carattere da file */",
 			"{",
 				"\t$0",
 			"}"
