@@ -1,1 +1,3 @@
-test.c
+# Ignore test files
+test.*
+makefile
