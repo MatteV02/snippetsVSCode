@@ -176,8 +176,16 @@
 	"util.ErrorPrint":{
 		"prefix": "printf error",
 		"body": [
-			"printf(\"Errore, ${1:error text}\\n\"); ",
-			"exit(${2:ExitValue});$0",
+			"printf(\"Errore, ${1:error text}\\n\"$2); ",
+			"exit(${3:ExitValue});$0",
+		],
+		"description": "Classical error print and exit"
+	},
+
+	"util.Print":{
+		"prefix": "printf snippet",
+		"body": [
+			"printf(\"$1\\n\"$2);$0"
 		],
 		"description": "Classical error print and exit"
 	},
@@ -195,7 +203,7 @@
 	"process.fork":{
 		"prefix": "fork",
 		"body": [
-			"int ${1:pidFiglio};\t// memorizzo il valore di ritorno della funzione fork\n",
+			"int ${1:pidFiglio};\t// memorizza il valore di ritorno della funzione fork\n",
 			"if (($1 = fork()) < 0)\t/* Il processo padre crea un figlio */",
 			"{\t/* In questo caso la fork e' fallita */",
 			"\tprintf(\"Errore durante la fork\\n\");",
@@ -215,7 +223,7 @@
 	"process.exec": {
 		"prefix": "exec",
 		"body": [
-			"${1|execv,execl,execvp,execlp|}(${2:params}); // in caso di lista, ricordati di 0 terminare la lista dei parametri!",
+			"${1|execv,execl,execvp,execlp|}(${2:params}); // in caso di lista, ricordati di 0 terminare la lista dei parametri! (char*)0",
 			"/* si esegue l'istruzione seguente SOLO in caso di fallimento */\n",
 			"perror(\"${3:errore esecuzione comando}\"); // #include <errno.h>",
 			"exit(errno);"
@@ -250,7 +258,7 @@
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
 			"} else {",
 				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
-				"$0",
+				"\t$0",
 			"}",
 		],
 		"description": "wait the termination of one child process ignoring the return value of the child"
@@ -284,7 +292,7 @@
 					"\texit($3);",
 					"}",
 					"",
-					"for(int i = 0;i < ${2:Fasi};i++){",
+					"for(int i = 0; i < ${2:Fasi}; i++){",
 					"\tif(pipe($1[i])<0){",
 					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\\n\",i);",
 					"\t\texit(${3:ExitValue});",
@@ -295,11 +303,11 @@
 	"pipes.forChiusuraLatoPipe":{
 		"prefix": "for chiusura n lati pipes",
 		"body": [
-			"//chiudo tutte le pipe in lettura e scrittura tranne la $3-esima pipe, aperta in ${6|scrittura, lettura|}",
+			"//chiudo tutte le pipe in lettura e scrittura tranne la $3-esima pipe, aperta in ${7|lettura,scrittura|}",
 			"for(int ${1:k} = 0; $1 < ${2:N}; $1++){",
-			"\tclose(piped[$1][${4|1,0|}]);",
-			"\tif ($1 != ${3:i}) {",
-			"\t\tclose(piped[$1][${5|0,1|}]);",
+			"\tclose(${3:piped}[$1][${5|1,0|}]);",
+			"\tif ($1 != ${4:i}) {",
+			"\t\tclose($3[$1][${6|0,1|}]);",
 			"\t}",
 			"}",
 			],
