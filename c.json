@@ -2,10 +2,10 @@
 	"LLibsMain":{
 		"prefix": "LLMAIN",
 		"body": [
-			"#include <stdio.h>\t// Includo la libreria per la funzione printf e BUFSIZ",
-			"#include <stdlib.h>\t// Includo la libreria per la funzione exit",
-			"#include <unistd.h>\t// Includo la libreria per la funzione close, fork, famiglia exec, read, write, lseek, famiglia get, pipe,",
-			"#include <fcntl.h>\t// Includo la libreria per la funzione open, creat e le relative macro",
+			"#include <stdio.h>\t\t// Includo la libreria per la funzione printf e BUFSIZ",
+			"#include <stdlib.h>\t\t// Includo la libreria per la funzione exit",
+			"#include <unistd.h>\t\t// Includo la libreria per la funzione close, fork, famiglia exec, read, write, lseek, famiglia get, pipe,",
+			"#include <fcntl.h>\t\t// Includo la libreria per la funzione open, creat e le relative macro",
 			"#include <sys/wait.h>\t// Includo la libreria per la funzione wait\n\n",
 
 			
@@ -303,7 +303,7 @@
 	"pipes.forChiusuraLatoPipe":{
 		"prefix": "for chiusura n lati pipes",
 		"body": [
-			"//chiudo tutte le pipe in lettura e scrittura tranne la $3-esima pipe, aperta in ${7|lettura,scrittura|}",
+			"//chiudo tutte le pipe in lettura e scrittura tranne la $4-esima pipe, aperta in ${7|lettura,scrittura|}",
 			"for(int ${1:k} = 0; $1 < ${2:N}; $1++){",
 			"\tclose(${3:piped}[$1][${5|1,0|}]);",
 			"\tif ($1 != ${4:i}) {",
