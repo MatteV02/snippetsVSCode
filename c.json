@@ -23,9 +23,9 @@
 			"if is file"
 		],
 		"body": [
-			"//controllo se il file e' accedibile",
-			"int fd = 0; /*variabile che conterra il file descriptor del file che stiamo per aprire */",
-			"if((fd = open(${1:file}, ${3|O_RDONLY,O_WRONLY,O_RDWR|})) < 0){\t\t/* ERRORE se non si riesce ad aprire in LETTURA il file */", 
+			"//apro il file $1",
+			"int fd = 0; // variabile che conterra' il file descriptor del file $1",
+			"if((fd = open(${1:file}, ${3|O_RDONLY,O_WRONLY,O_RDWR|})) < 0){\t\t/* ERRORE se non si riesce ad aprire il file */", 
 				"\tprintf(\"Errore in apertura file %s dato che fd = %d\\n\", ${1:file}, fd);",
 				"\texit(${2:ExitValue});",
 			"}$0"
@@ -38,9 +38,9 @@
 			"creat"
 		],
 		"body": [
-			"//creo il file",
-			"int fd = 0; /*variabile che conterra il file descriptor del file che stiamo per creare */",
-			"if((fd = creat(${1:file}, ${2:0640})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
+			"//creo il file $1",
+			"int fd = 0; // variabile che conterra il file descriptor del file $1 */",
+			"if((fd = creat(${1:file}, ${2:0644})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
 				"\tprintf(\"Errore in creazione del file %s dato che fd = %d\\n\", ${1:file}, fd);",
 				"\texit(${3:ExitValue});",
 			"}$0"
@@ -51,12 +51,12 @@
 	"check.singleChar":{
 		"prefix": "if single char",
 		"body": [
-			"//controlla che la stringa $1 sia un singolo carattere",
+			"//controlla che la stringa $1 contenga un singolo carattere",
 			"if (strlen(${1:StringaSorgente}) != 1) {\t// #include <string.h>",
 				"\tprintf(\"Errore, la stringa %s non e' un singolo carattere\\n\", ${1:StringaSorgente});",
 				"\texit(${3:ErrorCode});",
 			"}",
-			"char ${2:Cx} = ${1:StringaSorgente}[0];"
+			"char ${2:Cx} = ${1:StringaSorgente}[0];\t// Memorizzo il singolo carattere nella variabile $2"
 		],
 		"description": "Check if the specified string is a single char then assign it to a char variable"
 	},
@@ -67,7 +67,7 @@
 			"if (argc > ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero minore o uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-        		"\texit(${3:ExitValue});",
+        		"\texit(${2:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is less or equal than the specified number"
@@ -79,7 +79,7 @@
 			"if (argc >= ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero minore a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${3:ExitValue});",
+				"\texit(${2:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is less than the specified number"
@@ -91,7 +91,7 @@
 			"if (argc < ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero maggiore o uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${3:ExitValue});",
+				"\texit(${2:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is greater or equal than the specified number"
@@ -103,7 +103,7 @@
 			"if (argc <= ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero maggiore a ${1:NParams}*/",
 			"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${3:ExitValue});",
+				"\texit(${2:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is greater than the specified number"
@@ -115,7 +115,7 @@
 			"if (argc != ${1:NParams} + 1) /* controllo sul numero di parametri: devono essere in numero uguale a ${1:NParams}*/",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${3:ExitValue});",
+				"\texit(${2:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed equals the specified number"
@@ -127,7 +127,7 @@
 			"if (argc < ${1:lower bound} + 1 || argc > ${2:upper bound} + 1) /* controllo sul numero di parametri: devono essere compresi tra ${1:lower bound} e ${2:upper bound} */",
         	"{",
 				"\tprintf(\"Errore: numero di argomenti sbagliato dato che argc = %d\\n\", argc);",
-				"\texit(${5:ExitValue});",
+				"\texit(${3:ExitValue});",
 			"}$0"
 		],
 		"description": "Checks if the number of parameters passed is in the specified range"
@@ -163,7 +163,7 @@
 	"file.ReadCharByChar":{
 		"prefix": "read chars from file",
 		"body": [
-			"char ${1:buffer};\n",
+			"char ${1:buffer};\t// carattere usato per leggere il contenuto del file\n",
 
 			"while (read(${2:infile}, &${1:buffer}, sizeof(char)) > 0)\t/* ciclo di lettura fino a che riesco a leggere un carattere da file */",
 			"{",
@@ -217,7 +217,7 @@
 			"/* processo padre */",
 			"$0",
 		],
-		"description": "Fork a process following the correcto generation scheme"
+		"description": "Fork a process following the correct generation scheme"
 	},
 
 	"process.exec": {
@@ -245,19 +245,19 @@
 	"process.wait_StoreReturn":{
 		"prefix": "wait store return",
 		"body": [
-			"int ${2:pidFiglio};",
-			"int ${1:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
+			"int ${1:pidFiglio};",
+			"int ${2:status};\t// La variabile usata per memorizzare quanto ritornato dalla primitiva wait",
 			"int ${3:ritorno};\t// La variabile usata per memorizzare il valore di ritorno del processo figlio",
-			"if (($2 = wait(&${1:status})) < 0) {",
+			"if (($1 = wait(&$2)) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${4:ErrorCode});",
 			"}\n",
 
-			"if ((${1:status} & 0xFF) != 0)",
+			"if (($2 & 0xFF) != 0)",
 			"{",
 				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
 			"} else {",
-				"\t${3:ritorno} = (${1:status} >> 8) & 0xFF;",
+				"\t$3 = ($2 >> 8) & 0xFF;",
 				"\t$0",
 			"}",
 		],
@@ -272,31 +272,36 @@
 
 	"util.FiglioPrint":{
 		"prefix": "printf figlio",
-		"body": "printf(\"il figlio pid=%i ed ha ritornato=%i\\n\",${1:pidFiglio},${2:ritorno});",
+		"body": "printf(\"Il figlio di PID %d ha ritornato %d\\n\",${1:pidFiglio},${2:ritorno});",
 		"description": "standard print to display return value and pid of a child"
 	},
 
 	"pipes.typedef":{
 		"prefix": "LLTYPEDEF",
-		"body": ["//definisco il tipo pipe_t",
-				 "typedef int pipe_t[2];"],
+		"body": [
+			"//definisco il tipo pipe_t",
+			"typedef int pipe_t[2];"
+		],
 		"description": "definisce un array di pipe LLStyle"
 	},
 
 	"pipes.forAperturaNPipe":{
 			"prefix": "for apertura N pipe",
-			"body": ["//apro $2 pipes",
-					"pipe_t* ${1:piped} = (pipe_t*)malloc(sizeof(pipe_t) * (${2:Fasi}));",
-					"if ($1 == NULL) {",
-					"\tprintf(\"Errore nell'allocazione della memoria\\n\");",
-					"\texit($3);",
-					"}",
-					"",
-					"for(int i = 0; i < ${2:Fasi}; i++){",
-					"\tif(pipe($1[i])<0){",
-					"\t\tprintf(\"Errore nella creazione della pipe numero:%i\\n\",i);",
-					"\t\texit(${3:ExitValue});",
-					"\t}","}"],
+			"body": [
+				"//apro $2 pipes",
+				"pipe_t* ${1:piped} = (pipe_t*)malloc(sizeof(pipe_t) * (${2:Fasi}));",
+				"if ($1 == NULL) {",
+				"\tprintf(\"Errore nell'allocazione della memoria\\n\");",
+				"\texit($3);",
+				"}",
+				"",
+				"for(int i = 0; i < ${2:Fasi}; i++){",
+				"\tif(pipe($1[i])<0){",
+				"\t\tprintf(\"Errore nella creazione della pipe numero:%d\\n\",i);",
+				"\t\texit(${3:ExitValue});",
+				"\t}",
+				"}"
+			],
 			"description": "apre N pipe"	
 	},
 
@@ -315,13 +320,14 @@
 	},
 	"pipes.dup":{
 		"prefix": "dup ridirezione",
-		"body": ["//chiudo lo ${1|stdin,stdout|}",
-				"close(${2|0,1|});",
-				"//duplico la pipe lato ${3|scrittura,lettura|}",
-				"dup(piped$4);",
-				"//chiudo il lato della pipe duplicato",
-				"close(piped$4);",
-				"$0",
+		"body": [
+			"// chiudo lo ${1|stdin,stdout|}",
+			"close(${2|0,1|});",
+			"// duplico la pipe lato ${3|lettura, scrittura|}",
+			"dup(${4:piped}[${5|0,1|}]);",
+			"// chiudo il lato della pipe duplicato",
+			"close(${4:piped}[${5|0,1|}]);",
+			"$0",
 			],
 		"description": "chiude lo stdout/stdin ed lo rimpiazza con la pipe in lettura/scrittura"
 	},
@@ -329,8 +335,7 @@
 	"pipes.creaPipeSingola":{
 		"prefix": "pipe singola",
 		"body": [
-			"pipe_t ${1:piped};",
-			"",
+			"pipe_t ${1:piped};\n",
 			"if (pipe(${1:piped}) < 0 )",
 			"{\tprintf(\"Errore creazione pipe\\n\");",
 			"\texit(${2:ErrorCode});",
