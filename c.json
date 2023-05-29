@@ -234,7 +234,7 @@
 		"prefix": "wait ignore return",
 		"body": [
 			"int ${2:pidFiglio};",
-			"if ($2 = wait((int*) 0) < 0) {",
+			"if (($2 = wait((int*) 0)) < 0) {",
 				"\tprintf(\"Non e' stato creato nessun processo figlio\\n\");",
 				"\texit(${1:ErrorCode});",
 			"}$0",
