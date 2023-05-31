@@ -38,11 +38,11 @@
 			"creat"
 		],
 		"body": [
-			"//creo il file $1",
-			"int fd = 0; // variabile che conterra il file descriptor del file $1 */",
-			"if((fd = creat(${1:file}, ${2:0644})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
-				"\tprintf(\"Errore in creazione del file %s dato che fd = %d\\n\", ${1:file}, fd);",
-				"\texit(${3:ExitValue});",
+			"//creo il file $2",
+			"int ${1:fd} = 0; // variabile che conterra il file descriptor del file $2 */",
+			"if(($1 = creat(${2:file}, ${3:0644})) < 0){\t\t/* ERRORE se non si riesce a creare il file */", 
+				"\tprintf(\"Errore in creazione del file %s dato che $1 = %d\\n\", ${2:file}, $1);",
+				"\texit(${4:ExitValue});",
 			"}$0"
 		],
 		"description": "Opens a file in the selected mode and checks if the action is successful"
@@ -255,7 +255,7 @@
 
 			"if (($2 & 0xFF) != 0)",
 			"{",
-				"\tprintf(\"Il processo figlio è stato terminato in modo anomalo\\n\");",
+				"\tprintf(\"Il processo figlio con PID %d è stato terminato in modo anomalo\\n\", pidFiglio);",
 			"} else {",
 				"\t$3 = ($2 >> 8) & 0xFF;",
 				"\t$0",
